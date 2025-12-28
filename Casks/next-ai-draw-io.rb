@@ -38,5 +38,14 @@ cask "next-ai-draw-io" do
   If you see “App is damaged”, you can remove the quarantine attribute:
 
     sudo xattr -rd com.apple.quarantine "#{appdir}/Next AI Draw.io.app"
+
+  the command is to be executed by homebrew
 EOS
+
+postflight do
+  system_command "/usr/bin/xattr",
+                 args: ["-rd", "com.apple.quarantine", "#{appdir}/Next AI Draw.io.app"],
+                 sudo: true
+end
+
 end

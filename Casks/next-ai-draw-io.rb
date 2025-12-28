@@ -32,4 +32,11 @@ cask "next-ai-draw-io" do
       exec '#{appdir}/Next AI Draw.io.app/Contents/MacOS/Next AI Draw.io' "$@"
     EOS
   end
+  caveats <<~EOS
+  This app is not code-signed/notarized. macOS may show security warnings.
+
+  If you see “App is damaged”, you can remove the quarantine attribute:
+
+    sudo xattr -rd com.apple.quarantine "#{appdir}/Next AI Draw.io.app"
+EOS
 end

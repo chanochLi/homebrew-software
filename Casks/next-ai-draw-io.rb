@@ -11,8 +11,6 @@ cask "next-ai-draw-io" do
   desc "AI-assisted draw.io diagramming (desktop)"
   homepage "https://github.com/DayuanJiang/next-ai-draw-io"
 
-  # If the project tags releases consistently, you can keep this.
-  # Otherwise you may want strategy :page_match or similar.
   livecheck do
     url :url
     strategy :github_latest
@@ -20,7 +18,6 @@ cask "next-ai-draw-io" do
 
   auto_updates true
 
-  # Adjust if you know the minimum supported version.
   depends_on macos: ">= :monterey"
 
   app "Next AI Draw.io.app"
@@ -35,14 +32,4 @@ cask "next-ai-draw-io" do
       exec '#{appdir}/Next AI Draw.io.app/Contents/MacOS/Next AI Draw.io' "$@"
     EOS
   end
-
-  zap trash: [
-    # These are best-effort guesses; confirm actual bundle id paths after running once.
-    "~/Library/Application Support/Next AI Draw.io",
-    "~/Library/Caches/*next-ai-draw-io*",
-    "~/Library/HTTPStorages/*next-ai-draw-io*",
-    "~/Library/Logs/Next AI Draw.io",
-    "~/Library/Preferences/*next-ai-draw-io*.plist",
-    "~/Library/Saved Application State/*next-ai-draw-io*.savedState",
-  ]
 end

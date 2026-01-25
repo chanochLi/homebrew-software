@@ -1,0 +1,40 @@
+name: Bump next-ai-draw-io cask
+
+on:
+  schedule:
+    - cron: "23 */6 * * *" # 每 6 小时跑一次，你可改
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  bump:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Bump cask file
+        run: |
+          ./script/bump-next-ai-draw-io.sh
+
+      - name: Check diff
+        id: diff
+        run: |
+          if git diff --quiet; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      # 方案 1：自动开 PR（更安全，推荐）
+      - name: Commit & push
+        if: steps.diff.outputs.changed == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add Casks/next-ai-draw-io.rb
+          git commit -m "cask(next-ai-draw-io): bump to latest release"
+          git push

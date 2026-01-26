@@ -18,7 +18,7 @@ jobs:
 
       - name: Bump cask file
         run: |
-          ./script/bump-next-ai-draw-io.sh
+          ./scripts/bump-next-ai-draw-io.sh
 
       - name: Check diff
         id: diff

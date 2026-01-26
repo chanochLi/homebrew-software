@@ -18,7 +18,7 @@ jobs:
 
       - name: Bump cask file
         run: |
-          ./script/bump-openwork.sh
+          ./scripts/bump-openwork.sh
 
       - name: Check diff
         id: diff

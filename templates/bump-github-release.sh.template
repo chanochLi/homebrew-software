@@ -1,8 +1,17 @@
 #!/usr/bin/env bash
+# GitHub Release bump script template
+# Copy to scripts/bump-{{TOKEN}}.sh and fill in the configuration block below.
+
 set -euo pipefail
 
-CASK_PATH="Casks/next-ai-draw-io.rb"
-REPO="DayuanJiang/next-ai-draw-io"
+# --- Configuration ---
+CASK_PATH="Casks/{{TOKEN}}.rb"
+REPO="{{GITHUB_REPO}}"
+ASSET_PREFIX="{{ASSET_NAME}}"   # e.g. Next-AI-Draw.io
+ARCH_SUFFIX="arm64"             # e.g. arm64, x86_64, or "" for universal
+TAG_PREFIX="v"                  # upstream tag prefix, usually "v"
+# --- End configuration ---
+
 API_URL="https://api.github.com/repos/${REPO}/releases/latest"
 
 curl_github() {
@@ -59,7 +68,7 @@ tag="$(ruby -rjson -e '
   print tag
 ' "$api_response")"
 
-version="${tag#v}"
+version="${tag#${TAG_PREFIX}}"
 echo "Latest tag: $tag => version: $version"
 
 if [[ "$version" == "$current_version" ]]; then
@@ -67,19 +76,23 @@ if [[ "$version" == "$current_version" ]]; then
   exit 0
 fi
 
-arm_url="https://github.com/${REPO}/releases/download/v${version}/Next-AI-Draw.io-${version}-arm64.dmg"
+if [[ -n "$ARCH_SUFFIX" ]]; then
+  asset_name="${ASSET_PREFIX}-${version}-${ARCH_SUFFIX}.dmg"
+else
+  asset_name="${ASSET_PREFIX}-${version}.dmg"
+fi
 
-echo "Downloading arm dmg..."
+download_url="https://github.com/${REPO}/releases/download/${TAG_PREFIX}${version}/${asset_name}"
+
+echo "Downloading ${asset_name}..."
 curl -fL \
   ${GITHUB_TOKEN:+-H "Authorization: Bearer ${GITHUB_TOKEN}"} \
-  "$arm_url" -o "$tmpdir/arm.dmg"
-arm_sha="$(shasum -a 256 "$tmpdir/arm.dmg" | awk '{print $1}')"
+  "$download_url" -o "$tmpdir/asset.dmg"
+arm_sha="$(shasum -a 256 "$tmpdir/asset.dmg" | awk '{print $1}')"
 echo "arm sha256: $arm_sha"
 
 ruby -i -pe "
   gsub(/version\\s+\"[^\"]+\"/, 'version \"${version}\"');
-
-  # 替换 arm sha
   gsub(/sha256\\s+arm:\\s+\"[0-9a-f]{64}\"/, 'sha256 arm: \"${arm_sha}\"');
 " "$CASK_PATH"
 

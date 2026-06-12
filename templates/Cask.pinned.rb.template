@@ -1,0 +1,33 @@
+# Pinned cask template — 固定版本，手动维护 version / sha256
+# Replace {{PLACEHOLDERS}} before use.
+
+cask "{{TOKEN}}" do
+  version "{{VERSION}}"
+  sha256 "{{SHA256}}"
+
+  url "{{URL}}",
+      verified: "{{VERIFIED_DOMAIN}}/"
+  name "{{NAME}}"
+  desc "{{DESC}}"
+  homepage "{{HOMEPAGE}}"
+
+  # Optional: helps `brew livecheck` detect upstream updates (does not auto-bump this cask).
+  livecheck do
+    url "{{LIVECHECK_URL}}"
+    strategy :header_match
+  end
+
+  auto_updates true
+  depends_on macos: :{{MIN_MACOS}}
+
+  app "{{APP_NAME}}"
+
+  uninstall quit:      "{{BUNDLE_ID}}",
+             delete:    "/Applications/{{APP_NAME}}"
+
+  zap trash: [
+    "~/Library/Application Support/{{BUNDLE_ID}}",
+    "~/Library/Caches/{{BUNDLE_ID}}",
+    "~/Library/Preferences/{{BUNDLE_ID}}.plist",
+  ]
+end

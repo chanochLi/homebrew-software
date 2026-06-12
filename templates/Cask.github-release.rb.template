@@ -1,0 +1,38 @@
+# GitHub Release auto-update cask template
+# Replace {{PLACEHOLDERS}} before use.
+# Pair with bump-github-release.sh.template and workflow-bump.yml.template.
+
+cask "{{TOKEN}}" do
+  # Remove `arch arm:` and use a single sha256 if the app ships a universal DMG.
+  arch arm: "arm64"
+
+  version "{{VERSION}}"
+  sha256 arm: "{{SHA256_ARM}}"
+
+  url "https://github.com/{{GITHUB_REPO}}/releases/download/v#{version}/{{ASSET_NAME}}-#{version}-arm64.dmg",
+      verified: "github.com/{{GITHUB_REPO}}/"
+  name "{{NAME}}"
+  desc "{{DESC}}"
+  homepage "https://github.com/{{GITHUB_REPO}}"
+
+  livecheck do
+    url :url
+    strategy :github_latest
+  end
+
+  auto_updates true
+  depends_on macos: :{{MIN_MACOS}}
+
+  app "{{APP_NAME}}"
+
+  # Optional: CLI shim when the app has no native binary (see homebrew-cask#18809).
+  # shimscript = "#{staged_path}/{{TOKEN}}.wrapper.sh"
+  # binary shimscript, target: "{{TOKEN}}"
+  #
+  # preflight do
+  #   File.write shimscript, <<~EOS
+  #     #!/bin/bash
+  #     exec '#{appdir}/{{APP_NAME}}/Contents/MacOS/{{APP_EXECUTABLE}}' "$@"
+  #   EOS
+  # end
+end

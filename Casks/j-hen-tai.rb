@@ -1,6 +1,6 @@
 cask "j-hen-tai" do
-  version "8.0.14+321"
-  sha256 "44e7ed78978a3b7e44b5dd72f8726e400f5ad168b43c8d6da15dda09fcadd7d1"
+  version "8.0.14+323"
+  sha256 "86a7cf06f7ae35141f180467c0463440317ff4bc43163061c6f02eba6ed0fc91"
 
   url "https://github.com/jiangtian616/JHenTai/releases/download/v#{version}/JHenTai-#{version}.dmg",
       verified: "github.com/jiangtian616/JHenTai/"

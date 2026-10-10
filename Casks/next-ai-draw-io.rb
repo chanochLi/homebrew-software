@@ -1,8 +1,8 @@
 cask "next-ai-draw-io" do
   arch arm: "arm64"
 
-  version "0.4.16"
-  sha256 arm: "d33c4ea32c4a51f6e6d0e1f8a322b4c751292fd84ae0b6ebd198920586fccbe9"
+  version "0.5.0"
+  sha256 arm: "56070a4a1992f86125a6520dc93983c18324eabb4df744623b8d5db4f4bb792d"
 
   url "https://github.com/DayuanJiang/next-ai-draw-io/releases/download/v#{version}/Next-AI-Draw.io-#{version}-arm64.dmg",
       verified: "github.com/DayuanJiang/next-ai-draw-io/"
